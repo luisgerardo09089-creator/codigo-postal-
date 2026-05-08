@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Código Postal</title>
+    <title>Códigos Postales</title>
 
     <style>
-
         body {
             font-family: Arial, sans-serif;
             background: #f2f2f2;
@@ -63,6 +62,26 @@
             background: #f9f9f9;
         }
 
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background: #007bff;
+            color: white;
+        }
+
     </style>
 
 </head>
@@ -73,10 +92,8 @@
 
         <h1>Formulario Código Postal</h1>
 
-        <form>
-
+        <form id="formCP">
             <label for="cp">Código Postal:</label>
-
             <input 
                 type="text"
                 id="cp"
@@ -85,23 +102,61 @@
                 placeholder="Ejemplo: 12345"
                 required
             >
-
             <small>Debe contener exactamente 5 números.</small>
 
             <button type="submit">Enviar</button>
-
         </form>
 
         <!-- RESULTADO -->
         <div class="resultado">
-
-            <h2>Resultado</h2>
-
-            <p><strong>Código Postal ingresado:</strong> 12345</p>
-
+            <h2>Historial de Códigos Postales</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Código Postal</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaCP">
+                    <!-- Los códigos postales ingresados aparecerán aquí -->
+                </tbody>
+            </table>
         </div>
 
     </div>
+
+    <script>
+        const form = document.getElementById('formCP');
+        const inputCP = document.getElementById('cp');
+        const tablaCP = document.getElementById('tablaCP');
+        let contador = 0; // Para numerar los registros
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // Evita recarga de la página
+
+            const cp = inputCP.value.trim();
+
+            // Validar patrón de 5 dígitos
+            const regex = /^[0-9]{5}$/;
+            if (!regex.test(cp)) {
+                alert('El código postal debe contener exactamente 5 números.');
+                return;
+            }
+
+            // Incrementar contador y agregar fila a la tabla
+            contador++;
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td>${contador}</td>
+                <td>${cp}</td>
+            `;
+            tablaCP.appendChild(newRow);
+
+            // Limpiar formulario
+            form.reset();
+            inputCP.focus(); // Coloca el cursor nuevamente en el input
+        });
+    </script>
 
 </body>
 </html>
